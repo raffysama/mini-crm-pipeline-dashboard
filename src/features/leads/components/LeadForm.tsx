@@ -21,7 +21,7 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
     if (!company || !contactName || !value) return;
 
     const newLead: Lead = {
-      id: initialData?.id,
+      id: initialData?.id ?? crypto.randomUUID(),
       company,
       contact_name: contactName,
       email: "",

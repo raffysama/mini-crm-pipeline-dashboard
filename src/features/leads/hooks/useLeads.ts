@@ -5,11 +5,11 @@ import toast from "react-hot-toast";
 
 export const useLeads = () => {
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchLeads() {
-      setLoading(true);
+      // setLoading(true);
 
       const { data, error } = await supabase
         .from("leads")
@@ -18,12 +18,12 @@ export const useLeads = () => {
 
       if (error) {
         console.error("Fetch leads error:", error);
-        setLoading(false);
+        // setLoading(false);
         return;
       }
 
       setLeads(data || []);
-      setLoading(false);
+      // setLoading(false);
     }
 
     fetchLeads();
