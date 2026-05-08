@@ -46,7 +46,7 @@ function LeadTable({ leads, onDeleteLead, onEditLead }: LeadTableProps) {
               <td className="px-4 py-3 font-medium text-slate-900">
                 {lead.company}
               </td>
-              <td className="px-4 py-3 text-slate-600">{lead.contactName}</td>
+              <td className="px-4 py-3 text-slate-600">{lead.contact_name}</td>
               <td className="px-4 py-3">
                 <Badge variant={getStatusVariant(lead.status)}>
                   {lead.status}
@@ -60,7 +60,9 @@ function LeadTable({ leads, onDeleteLead, onEditLead }: LeadTableProps) {
               <td className="px-4 py-3 text-slate-600">
                 ${lead.value.toLocaleString()}
               </td>
-              <td className="px-4 py-3 text-slate-600">{lead.nextFollowUp}</td>
+              <td className="px-4 py-3 text-slate-600">
+                {lead.next_follow_up}
+              </td>
               <td className="px-4 py-3 text-right">
                 <button
                   type="button"

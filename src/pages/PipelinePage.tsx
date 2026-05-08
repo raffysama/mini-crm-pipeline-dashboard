@@ -47,7 +47,7 @@ function PipelinePage({ leads, onUpdateLeadStatus }: PipelinePageProps) {
     if (!lead || lead.status === newStatus) return;
 
     onUpdateLeadStatus(leadId, newStatus);
-    toast.success(`Moved ${lead.contactName} to ${newStatus}`);
+    toast.success(`Moved ${lead.contact_name} to ${newStatus}`);
   }
 
   return (

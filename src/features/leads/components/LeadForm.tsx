@@ -21,18 +21,18 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
     if (!company || !contactName || !value) return;
 
     const newLead: Lead = {
-      id: initialData?.id || Date.now().toString(),
+      id: initialData?.id,
       company,
-      contactName,
+      contact_name: contactName,
       email: "",
       phone: "",
       value: Number(value),
       status,
       priority,
-      nextFollowUp: "",
+      next_follow_up: "",
       notes: "",
-      createdAt:
-        initialData?.createdAt || new Date().toISOString().split("T")[0],
+      created_at:
+        initialData?.created_at || new Date().toISOString().split("T")[0],
     };
 
     onSubmit(newLead);
@@ -41,7 +41,7 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
     if (!initialData) return;
 
     setCompany(initialData.company);
-    setContactName(initialData.contactName);
+    setContactName(initialData.contact_name);
     setValue(initialData.value.toString());
     setPriority(initialData.priority);
     setStatus(initialData.status);

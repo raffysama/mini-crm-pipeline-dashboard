@@ -27,7 +27,7 @@ function LeadCard({ lead }: LeadCardProps) {
         }`}
       >
         <h3 className="font-medium text-slate-900">{lead.company}</h3>
-        <p className="text-sm text-slate-500">{lead.contactName}</p>
+        <p className="text-sm text-slate-500">{lead.contact_name}</p>
         <p className="mt-2 text-sm font-medium text-slate-700">
           ${lead.value.toLocaleString()}
         </p>

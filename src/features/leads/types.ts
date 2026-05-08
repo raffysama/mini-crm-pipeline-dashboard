@@ -11,13 +11,13 @@ export type LeadPriority = "low" | "medium" | "high";
 export interface Lead {
   id: string;
   company: string;
-  contactName: string;
+  contact_name: string;
   email: string;
   phone: string;
   value: number;
   status: LeadStatus;
   priority: LeadPriority;
-  nextFollowUp: string;
+  next_follow_up: string;
   notes: string;
-  createdAt: string;
+  created_at: string;
 }

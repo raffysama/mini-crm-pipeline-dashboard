@@ -1,34 +1,93 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Lead } from "../types";
-import { seedLeads } from "../seed";
+import { supabase } from "../../../lib/supabaseClient";
 import toast from "react-hot-toast";
 
 export const useLeads = () => {
-  const [leads, setLeads] = useState<Lead[]>(seedLeads);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  function addLeads(lead: Lead) {
-    setLeads((currentLeads) => [...currentLeads, lead]);
-    toast.success(`${lead.company} added`);
+  useEffect(() => {
+    async function fetchLeads() {
+      setLoading(true);
+
+      const { data, error } = await supabase
+        .from("leads")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Fetch leads error:", error);
+        setLoading(false);
+        return;
+      }
+
+      setLeads(data || []);
+      setLoading(false);
+    }
+
+    fetchLeads();
+  }, []);
+
+  async function addLeads(lead: Lead) {
+    const { id, ...leadWithoutId } = lead; // removes id
+
+    const { data, error } = await supabase
+      .from("leads")
+      .insert([leadWithoutId])
+      .select()
+      .single();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+    toast.success("Lead created");
+    setLeads((prev) => [...prev, data]);
   }
 
-  function updateLead(updateLead: Lead) {
-    setLeads((currentLeads) =>
-      currentLeads.map((lead) =>
-        lead.id === updateLead.id ? updateLead : lead,
-      ),
+  async function updateLead(updatedLead: Lead) {
+    const { data, error } = await supabase
+      .from("leads")
+      .update(updatedLead)
+      .eq("id", updatedLead.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+    toast.success("Lead updated");
+    setLeads((prev) =>
+      prev.map((lead) => (lead.id === updatedLead.id ? data : lead)),
     );
-    toast.success(`${updateLead.company} updated`);
   }
 
-  function deleteLead(id: string) {
-    const leadToDelete = leads.find((lead) => lead.id === id);
-    setLeads((currentLeads) => currentLeads.filter((lead) => lead.id !== id));
-    toast.error(`${leadToDelete?.company} deleted`);
+  async function deleteLead(id: string) {
+    const { error } = await supabase.from("leads").delete().eq("id", id);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+    toast.error("Lead deleted");
+    setLeads((prev) => prev.filter((l) => l.id !== id));
   }
 
-  function updateLeadStatus(id: string, status: Lead["status"]) {
-    setLeads((currentLeads) =>
-      currentLeads.map((lead) => (lead.id === id ? { ...lead, status } : lead)),
+  async function updateLeadStatus(id: string, status: Lead["status"]) {
+    const { error } = await supabase
+      .from("leads")
+      .update({ status })
+      .eq("id", id);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setLeads((prev) =>
+      prev.map((lead) => (lead.id === id ? { ...lead, status } : lead)),
     );
   }
 

@@ -32,7 +32,7 @@ function LeadsPage({
 
     const matchesSearch =
       lead.company.toLowerCase().includes(searchValue) ||
-      lead.contactName.toLowerCase().includes(searchValue);
+      lead.contact_name.toLowerCase().includes(searchValue);
 
     const matchesPriority =
       priorityFilter === "all" || lead.priority === priorityFilter;
@@ -141,8 +141,6 @@ function LeadsPage({
             onClose={() => setIsDeleteModalOpen(false)}
           >
             <div className="space-y-4">
-              <h2 className="text-lg font-semibold">Delete Lead</h2>
-
               <p className="text-sm text-slate-600">
                 Are you sure you want to delete this lead?
               </p>
