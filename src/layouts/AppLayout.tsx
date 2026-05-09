@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { User } from "@supabase/supabase-js";
 
 type ActivePage = "dashboard" | "pipeline" | "leads";
 
@@ -6,6 +7,8 @@ interface AppLayoutProps {
   children: ReactNode;
   activePage: ActivePage;
   onPageChange: (page: ActivePage) => void;
+  user: User;
+  onLogout: () => void;
 }
 
 const NAV_ITEMS: { page: ActivePage; label: string; icon: string }[] = [
@@ -18,6 +21,8 @@ export function AppLayout({
   children,
   activePage,
   onPageChange,
+  user,
+  onLogout,
 }: AppLayoutProps) {
   return (
     <div className="min-h-screen bg-slate-50">
@@ -80,17 +85,29 @@ export function AppLayout({
         </nav>
 
         {/* Footer */}
+        {/* Footer */}
         <div className="border-t border-slate-100 px-4 py-4">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-600">
-              U
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-600">
+                {user.email?.[0].toUpperCase()}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-medium text-slate-700">
+                  {user.email}
+                </p>
+              </div>
             </div>
-            <div className="min-w-0">
-              <p className="truncate text-xs font-medium text-slate-700">
-                User
-              </p>
-              <p className="truncate text-xs text-slate-400">user@email.com</p>
-            </div>
+            <button
+              onClick={() => {
+                if (window.confirm("Are you sure you want to logout?")) {
+                  onLogout();
+                }
+              }}
+              className="cursor-pointer text-xs text-slate-400 hover:text-slate-600"
+            >
+              <i className="ti ti-logout text-base" />
+            </button>
           </div>
         </div>
       </aside>
