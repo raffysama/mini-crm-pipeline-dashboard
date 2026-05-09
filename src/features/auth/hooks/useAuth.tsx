@@ -34,6 +34,10 @@ export const useAuth = () => {
   async function logout() {
     await supabase.auth.signOut();
   }
+  async function signup(email: string, password: string) {
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) throw error;
+  }
   async function uploadAvatar(file: File) {
     if (!user) return;
 
@@ -67,5 +71,5 @@ export const useAuth = () => {
     );
   }
 
-  return { user, loading, login, logout, uploadAvatar };
+  return { user, loading, login, logout, uploadAvatar, signup };
 };

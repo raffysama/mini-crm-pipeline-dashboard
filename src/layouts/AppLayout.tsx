@@ -120,7 +120,7 @@ export function AppLayout({
               </label>
               <div className="min-w-0">
                 <p className="truncate text-xs font-medium text-slate-700">
-                  {user.email}
+                  {user.user_metadata?.display_name || user.email}
                 </p>
               </div>
             </div>

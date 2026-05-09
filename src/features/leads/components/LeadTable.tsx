@@ -60,8 +60,20 @@ function LeadTable({ leads, onDeleteLead, onEditLead }: LeadTableProps) {
               <td className="px-4 py-3 text-slate-600">
                 ${lead.value.toLocaleString()}
               </td>
-              <td className="px-4 py-3 text-slate-600">
-                {lead.next_follow_up}
+              <td className="px-4 py-3">
+                {lead.next_follow_up ? (
+                  <span
+                    className={
+                      new Date(lead.next_follow_up) < new Date()
+                        ? "font-medium text-red-500"
+                        : "text-slate-600"
+                    }
+                  >
+                    {lead.next_follow_up}
+                  </span>
+                ) : (
+                  <span className="text-slate-400">—</span>
+                )}
               </td>
               <td className="px-4 py-3 text-right">
                 <button
@@ -86,7 +98,7 @@ function LeadTable({ leads, onDeleteLead, onEditLead }: LeadTableProps) {
           {leads.length === 0 && (
             <tr>
               <td
-                colSpan={6}
+                colSpan={8}
                 className="px-4 py-10 text-center text-sm text-slate-500"
               >
                 No leads found.

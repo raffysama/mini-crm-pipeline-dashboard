@@ -43,7 +43,9 @@ function App() {
       onUploadAvatar={uploadAvatar}
     >
       <Toaster position="top-center" />
-      {activePage === "dashboard" && <DashboardPage leads={leads} />}
+      {activePage === "dashboard" && (
+        <DashboardPage leads={leads} loading={loading} />
+      )}
       {activePage === "pipeline" && (
         <PipelinePage leads={leads} onUpdateLeadStatus={updateLeadStatus} />
       )}

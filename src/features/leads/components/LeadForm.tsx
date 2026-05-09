@@ -14,6 +14,7 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
   const [value, setValue] = useState("");
   const [priority, setPriority] = useState<LeadPriority>("medium");
   const [status, setStatus] = useState<LeadStatus>("new");
+  const [nextFollowUp, setNextFollowup] = useState("");
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -29,7 +30,7 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
       value: Number(value),
       status,
       priority,
-      next_follow_up: "",
+      next_follow_up: nextFollowUp,
       notes: "",
       created_at:
         initialData?.created_at || new Date().toISOString().split("T")[0],
@@ -45,6 +46,7 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
     setValue(initialData.value.toString());
     setPriority(initialData.priority);
     setStatus(initialData.status);
+    setNextFollowup(initialData.next_follow_up);
   }, [initialData]);
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -105,7 +107,17 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
           ))}
         </select>
       </div>
-
+      <div>
+        <label className="text-sm font-medium text-slate-700">
+          Next Follow-up
+        </label>
+        <input
+          type="date"
+          value={nextFollowUp}
+          onChange={(event) => setNextFollowup(event.target.value)}
+          className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
+        />
+      </div>
       <div className="flex gap-3 pt-2">
         <button
           type="submit"

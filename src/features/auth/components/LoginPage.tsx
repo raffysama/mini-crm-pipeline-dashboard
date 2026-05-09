@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { login, signup } = useAuth();
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,12 +16,21 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      await login(email, password);
+      if (isSignUp) {
+        await signup(email, password);
+        toast.success("Account created successfully");
+        setIsSignUp(false);
+      } else {
+        await login(email, password);
+        toast.success("Login successful");
+      }
+      setEmail("");
+      setPassword("");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Login failed");
+        setError("Something went wrong");
       }
     } finally {
       setLoading(false);
@@ -41,9 +52,11 @@ function LoginPage() {
         </div>
 
         <h1 className="mb-1 text-lg font-semibold text-slate-900">
-          Welcome back
+          {isSignUp ? "Create account" : "Welcome back"}
         </h1>
-        <p className="mb-6 text-sm text-slate-500">Sign in to your account</p>
+        <p className="mb-6 text-sm text-slate-500 ">
+          {isSignUp ? "Sign up to get started" : "Sign in to your account"}
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -79,9 +92,22 @@ function LoginPage() {
             disabled={loading}
             className="w-full rounded-lg bg-slate-900 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Please wait..." : isSignUp ? "Sign up" : "Sign in"}
           </button>
         </form>
+
+        <p className="mt-4 text-center text-sm text-slate-500">
+          {isSignUp ? "Already have an account?" : "Don't have an account?"}
+          <button
+            onClick={() => {
+              setIsSignUp(!isSignUp);
+              setError("");
+            }}
+            className="ml-1 font-medium text-slate-900 hover:underline cursor-pointer"
+          >
+            {isSignUp ? "Sign in" : "Sign up"}
+          </button>
+        </p>
       </div>
     </div>
   );
