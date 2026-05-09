@@ -11,7 +11,7 @@ import { Toaster } from "react-hot-toast";
 type ActivePage = "dashboard" | "pipeline" | "leads";
 
 function App() {
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, uploadAvatar } = useAuth();
   const { leads, addLeads, deleteLead, updateLead, updateLeadStatus } =
     useLeads();
   const [activePage, setActivePage] = useState<ActivePage>("dashboard");
@@ -39,6 +39,7 @@ function App() {
       onPageChange={setActivePage}
       user={user}
       onLogout={logout}
+      onUploadAvatar={uploadAvatar}
     >
       <Toaster position="top-center" />
       {activePage === "dashboard" && <DashboardPage leads={leads} />}

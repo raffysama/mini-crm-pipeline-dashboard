@@ -9,6 +9,7 @@ interface AppLayoutProps {
   onPageChange: (page: ActivePage) => void;
   user: User;
   onLogout: () => void;
+  onUploadAvatar: (file: File) => Promise<void>;
 }
 
 const NAV_ITEMS: { page: ActivePage; label: string; icon: string }[] = [
@@ -23,6 +24,7 @@ export function AppLayout({
   onPageChange,
   user,
   onLogout,
+  onUploadAvatar,
 }: AppLayoutProps) {
   return (
     <div className="min-h-screen bg-slate-50">
@@ -85,13 +87,30 @@ export function AppLayout({
         </nav>
 
         {/* Footer */}
-        {/* Footer */}
         <div className="border-t border-slate-100 px-4 py-4">
           <div className="flex items-center justify-between gap-2.5">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-600">
-                {user.email?.[0].toUpperCase()}
-              </div>
+              <label className="cursor-pointer">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (file) await onUploadAvatar(file);
+                  }}
+                />
+                {user.user_metadata?.avatar_url ? (
+                  <img
+                    src={user.user_metadata.avatar_url}
+                    className="h-7 w-7 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-200 text-xs font-semibold text-slate-600">
+                    {user.email?.[0].toUpperCase()}
+                  </div>
+                )}
+              </label>
               <div className="min-w-0">
                 <p className="truncate text-xs font-medium text-slate-700">
                   {user.email}

@@ -34,6 +34,38 @@ export const useAuth = () => {
   async function logout() {
     await supabase.auth.signOut();
   }
+  async function uploadAvatar(file: File) {
+    if (!user) return;
 
-  return { user, loading, login, logout };
+    const fileExt = file.name.split(".").pop();
+    const filePath = `${user.id}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
+
+    const { error: updateError } = await supabase.auth.updateUser({
+      data: { avatar_url: data.publicUrl },
+    });
+
+    if (updateError) throw updateError;
+
+    setUser((prev) =>
+      prev
+        ? {
+            ...prev,
+            user_metadata: {
+              ...prev.user_metadata,
+              avatar_url: data.publicUrl,
+            },
+          }
+        : prev,
+    );
+  }
+
+  return { user, loading, login, logout, uploadAvatar };
 };
