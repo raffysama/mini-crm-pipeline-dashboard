@@ -7,8 +7,9 @@ import PipelinePage from "../pages/PipelinePage";
 import LeadsPage from "../pages/LeadsPage";
 import LoginPage from "../features/auth/components/LoginPage";
 import { Toaster } from "react-hot-toast";
+import SettingsPage from "../features/auth/components/SettingsPage";
 
-type ActivePage = "dashboard" | "pipeline" | "leads";
+type ActivePage = "dashboard" | "pipeline" | "leads" | "settings";
 
 function App() {
   const { user, loading, logout, uploadAvatar } = useAuth();
@@ -53,6 +54,9 @@ function App() {
           onDeleteLead={deleteLead}
           onEditLead={updateLead}
         />
+      )}
+      {activePage === "settings" && (
+        <SettingsPage user={user} onUploadAvatar={uploadAvatar} />
       )}
     </AppLayout>
   );

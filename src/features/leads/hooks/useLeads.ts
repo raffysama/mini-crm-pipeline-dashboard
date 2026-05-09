@@ -14,6 +14,7 @@ export const useLeads = () => {
       const { data, error } = await supabase
         .from("leads")
         .select("*")
+        .eq("user_id", (await supabase.auth.getUser()).data.user?.id)
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -30,11 +31,14 @@ export const useLeads = () => {
   }, []);
 
   async function addLeads(lead: Lead) {
-    const { id, ...leadWithoutId } = lead; // removes id
+    const { id, ...leadWithoutId } = lead;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
     const { data, error } = await supabase
       .from("leads")
-      .insert([leadWithoutId])
+      .insert([{ ...leadWithoutId, user_id: user?.id }])
       .select()
       .single();
 

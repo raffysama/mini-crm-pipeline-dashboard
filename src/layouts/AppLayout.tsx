@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 
-type ActivePage = "dashboard" | "pipeline" | "leads";
+type ActivePage = "dashboard" | "pipeline" | "leads" | "settings";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -77,13 +77,20 @@ export function AppLayout({
 
           <div className="my-3 border-t border-slate-100" />
 
-          <a className="flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
+          <button
+            onClick={() => onPageChange("settings")}
+            className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
+              activePage === "settings"
+                ? "bg-slate-900 text-white"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+            }`}
+          >
             <i
-              className="ti ti-settings text-base text-slate-400"
+              className={`ti ti-settings text-base ${activePage === "settings" ? "text-white" : "text-slate-400"}`}
               aria-hidden="true"
             />
             Settings
-          </a>
+          </button>
         </nav>
 
         {/* Footer */}
