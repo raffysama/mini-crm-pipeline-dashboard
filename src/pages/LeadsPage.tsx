@@ -10,6 +10,7 @@ interface LeadsPageProps {
   onAddLead: (lead: Lead) => void;
   onDeleteLead: (id: string) => void;
   onEditLead: (lead: Lead) => void;
+  onViewLead: (lead: Lead) => void;
 }
 
 function LeadsPage({
@@ -17,6 +18,7 @@ function LeadsPage({
   onAddLead,
   onDeleteLead,
   onEditLead,
+  onViewLead,
 }: LeadsPageProps) {
   const [search, setSearch] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
@@ -122,6 +124,7 @@ function LeadsPage({
           leads={sortedLeads}
           onDeleteLead={handleOpenDeleteModal}
           onEditLead={handleOpenEdit}
+          onViewLead={onViewLead}
         />
         {isEditOpen && editingLead && (
           <Modal title="Edit Lead" onClose={handleCloseEdit}>

@@ -31,6 +31,9 @@ function LeadCard({ lead }: LeadCardProps) {
         <p className="mt-2 text-sm font-medium text-slate-700">
           ${lead.value.toLocaleString()}
         </p>
+        <p className="text-xs text-slate-500 mt-2">
+          Next follow-up: {lead.next_follow_up}
+        </p>
       </div>
     </>
   );

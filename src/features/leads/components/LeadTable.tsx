@@ -5,6 +5,7 @@ interface LeadTableProps {
   leads: Lead[];
   onDeleteLead: (id: string) => void;
   onEditLead: (lead: Lead) => void;
+  onViewLead: (lead: Lead) => void;
 }
 function getStatusVariant(status: Lead["status"]) {
   if (status === "new") return "blue";
@@ -25,7 +26,12 @@ function getPriorityVariant(priority: Lead["priority"]) {
   return "slate";
 }
 
-function LeadTable({ leads, onDeleteLead, onEditLead }: LeadTableProps) {
+function LeadTable({
+  leads,
+  onDeleteLead,
+  onEditLead,
+  onViewLead,
+}: LeadTableProps) {
   return (
     <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
       <table className="w-full text-left text-sm">
@@ -43,7 +49,10 @@ function LeadTable({ leads, onDeleteLead, onEditLead }: LeadTableProps) {
         <tbody className="divide-y divide-slate-100">
           {leads.map((lead) => (
             <tr key={lead.id} className="hover:bg-slate-50">
-              <td className="px-4 py-3 font-medium text-slate-900">
+              <td
+                className="cursor-pointer px-4 py-3 font-medium text-slate-900"
+                onClick={() => onViewLead(lead)}
+              >
                 {lead.company}
               </td>
               <td className="px-4 py-3 text-slate-600">{lead.contact_name}</td>

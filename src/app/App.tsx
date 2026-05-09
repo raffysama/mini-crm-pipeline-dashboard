@@ -8,14 +8,22 @@ import LeadsPage from "../pages/LeadsPage";
 import LoginPage from "../features/auth/components/LoginPage";
 import { Toaster } from "react-hot-toast";
 import SettingsPage from "../features/auth/components/SettingsPage";
+import LeadDetail from "../features/leads/components/LeadDetail";
+import type { Lead } from "../features/leads/types";
 
-type ActivePage = "dashboard" | "pipeline" | "leads" | "settings";
+type ActivePage =
+  | "dashboard"
+  | "pipeline"
+  | "leads"
+  | "settings"
+  | "leadDetail";
 
 function App() {
   const { user, loading, logout, uploadAvatar } = useAuth();
   const { leads, addLeads, deleteLead, updateLead, updateLeadStatus } =
     useLeads();
   const [activePage, setActivePage] = useState<ActivePage>("dashboard");
+  const [viewingLead, setViewingLead] = useState<Lead | null>(null);
 
   if (loading) {
     return (
@@ -33,7 +41,10 @@ function App() {
       </>
     );
   }
-
+  const handleViewLead = (lead: Lead) => {
+    setViewingLead(lead);
+    setActivePage("leadDetail");
+  };
   return (
     <AppLayout
       activePage={activePage}
@@ -55,6 +66,17 @@ function App() {
           onAddLead={addLeads}
           onDeleteLead={deleteLead}
           onEditLead={updateLead}
+          onViewLead={handleViewLead}
+        />
+      )}
+      {activePage === "leadDetail" && viewingLead && (
+        <LeadDetail
+          lead={viewingLead}
+          onBack={() => setActivePage("leads")}
+          onEdit={(lead) => {
+            setViewingLead(lead);
+            setActivePage("leads");
+          }}
         />
       )}
       {activePage === "settings" && (

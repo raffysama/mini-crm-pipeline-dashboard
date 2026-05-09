@@ -1,7 +1,12 @@
 import type { ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
 
-type ActivePage = "dashboard" | "pipeline" | "leads" | "settings";
+type ActivePage =
+  | "dashboard"
+  | "pipeline"
+  | "leads"
+  | "settings"
+  | "leadDetail";
 
 interface AppLayoutProps {
   children: ReactNode;
