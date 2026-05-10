@@ -1,36 +1,29 @@
 import type { ReactNode } from "react";
 import type { User } from "@supabase/supabase-js";
-
-type ActivePage =
-  | "dashboard"
-  | "pipeline"
-  | "leads"
-  | "settings"
-  | "leadDetail";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface AppLayoutProps {
   children: ReactNode;
-  activePage: ActivePage;
-  onPageChange: (page: ActivePage) => void;
   user: User;
   onLogout: () => void;
   onUploadAvatar: (file: File) => Promise<void>;
 }
 
-const NAV_ITEMS: { page: ActivePage; label: string; icon: string }[] = [
-  { page: "dashboard", label: "Dashboard", icon: "ti-layout-dashboard" },
-  { page: "pipeline", label: "Pipeline", icon: "ti-layout-kanban" },
-  { page: "leads", label: "Leads", icon: "ti-users" },
+const NAV_ITEMS = [
+  { path: "/", label: "Dashboard", icon: "ti-layout-dashboard" },
+  { path: "/pipeline", label: "Pipeline", icon: "ti-layout-kanban" },
+  { path: "/leads", label: "Leads", icon: "ti-users" },
 ];
 
 export function AppLayout({
   children,
-  activePage,
-  onPageChange,
   user,
   onLogout,
   onUploadAvatar,
 }: AppLayoutProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <div className="min-h-screen bg-slate-50">
       <aside className="fixed left-0 top-0 hidden h-screen w-60 flex-col border-r border-slate-200 bg-white md:flex">
@@ -59,12 +52,12 @@ export function AppLayout({
           <p className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-widest text-slate-400">
             Menu
           </p>
-          {NAV_ITEMS.map(({ page, label, icon }) => {
-            const active = activePage === page;
+          {NAV_ITEMS.map(({ path, label, icon }) => {
+            const active = location.pathname === path;
             return (
               <button
-                key={page}
-                onClick={() => onPageChange(page)}
+                key={path}
+                onClick={() => navigate(path)}
                 className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
                   active
                     ? "bg-slate-900 text-white"
@@ -83,15 +76,15 @@ export function AppLayout({
           <div className="my-3 border-t border-slate-100" />
 
           <button
-            onClick={() => onPageChange("settings")}
+            onClick={() => navigate("/settings")}
             className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
-              activePage === "settings"
+              location.pathname === "/settings"
                 ? "bg-slate-900 text-white"
                 : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
             }`}
           >
             <i
-              className={`ti ti-settings text-base ${activePage === "settings" ? "text-white" : "text-slate-400"}`}
+              className={`ti ti-settings text-base ${location.pathname === "/settings" ? "text-white" : "text-slate-400"}`}
               aria-hidden="true"
             />
             Settings

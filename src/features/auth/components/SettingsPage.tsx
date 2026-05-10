@@ -105,7 +105,7 @@ function SettingsPage({ user, onUploadAvatar }: SettingsPageProps) {
         <button
           onClick={handleSaveName}
           disabled={savingName}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+          className="cursor-pointer rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
         >
           {savingName ? "Saving..." : "Save Name"}
         </button>
@@ -132,7 +132,7 @@ function SettingsPage({ user, onUploadAvatar }: SettingsPageProps) {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
             >
               <i
                 className={`ti ${showPassword ? "ti-eye-off" : "ti-eye"} text-base`}
@@ -156,7 +156,7 @@ function SettingsPage({ user, onUploadAvatar }: SettingsPageProps) {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
             >
               <i
                 className={`ti ${showPassword ? "ti-eye-off" : "ti-eye"} text-base`}
@@ -168,7 +168,7 @@ function SettingsPage({ user, onUploadAvatar }: SettingsPageProps) {
         <button
           onClick={handleChangePassword}
           disabled={savingPassword}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+          className="cursor-pointer rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
         >
           {savingPassword ? "Saving..." : "Update Password"}
         </button>

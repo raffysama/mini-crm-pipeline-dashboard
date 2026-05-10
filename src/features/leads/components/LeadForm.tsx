@@ -121,7 +121,7 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
       <div className="flex gap-3 pt-2">
         <button
           type="submit"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+          className="cursor-pointer rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
         >
           Save Lead
         </button>
@@ -129,7 +129,7 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+          className="cursor-pointer rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
         >
           Cancel
         </button>

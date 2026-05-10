@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Lead } from "../features/leads/types";
 import LeadTable from "../features/leads/components/LeadTable";
 import LeadForm from "../features/leads/components/LeadForm";
@@ -11,6 +11,8 @@ interface LeadsPageProps {
   onDeleteLead: (id: string) => void;
   onEditLead: (lead: Lead) => void;
   onViewLead: (lead: Lead) => void;
+  initialEditingLead;
+  onClearEditingLead;
 }
 
 function LeadsPage({
@@ -19,6 +21,8 @@ function LeadsPage({
   onDeleteLead,
   onEditLead,
   onViewLead,
+  initialEditingLead,
+  onClearEditingLead,
 }: LeadsPageProps) {
   const [search, setSearch] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
@@ -68,6 +72,13 @@ function LeadsPage({
     setIsEditOpen(false);
     setEditingLead(null);
   };
+  useEffect(() => {
+    if (initialEditingLead) {
+      setEditingLead(initialEditingLead);
+      setIsEditOpen(true);
+      onClearEditingLead?.();
+    }
+  }, [initialEditingLead]);
   return (
     <>
       <div className="p-6">
@@ -82,7 +93,7 @@ function LeadsPage({
           <button
             type="button"
             onClick={() => setIsCreateOpen(true)}
-            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            className="cursor-pointer rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
           >
             + New Lead
           </button>
@@ -151,14 +162,14 @@ function LeadsPage({
               <div className="flex justify-end gap-3">
                 <button
                   onClick={() => setIsDeleteModalOpen(false)}
-                  className="rounded-lg border px-4 py-2"
+                  className="cursor-pointer rounded-lg border px-4 py-2"
                 >
                   Cancel
                 </button>
 
                 <button
                   onClick={handleConfirmDelete}
-                  className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
+                  className="cursor-pointer rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
                 >
                   Delete
                 </button>

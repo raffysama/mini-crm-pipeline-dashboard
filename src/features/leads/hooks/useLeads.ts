@@ -92,6 +92,29 @@ export const useLeads = () => {
       prev.map((lead) => (lead.id === id ? { ...lead, status } : lead)),
     );
   }
+  async function saveNotes(id: string, notes: string) {
+    const { error } = await supabase
+      .from("leads")
+      .update({ notes })
+      .eq("id", id);
 
-  return { leads, addLeads, updateLead, deleteLead, updateLeadStatus, loading };
+    if (error) {
+      console.error(error);
+      return;
+    }
+    toast.success("Notes saved");
+    setLeads((prev) =>
+      prev.map((lead) => (lead.id === id ? { ...lead, notes } : lead)),
+    );
+  }
+
+  return {
+    leads,
+    addLeads,
+    updateLead,
+    deleteLead,
+    updateLeadStatus,
+    loading,
+    saveNotes,
+  };
 };

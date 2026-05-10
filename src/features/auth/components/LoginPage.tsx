@@ -84,7 +84,7 @@ function LoginPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              className="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
             >
               <i
                 className={`ti ${showPassword ? "ti-eye-off" : "ti-eye"} text-base`}
@@ -97,7 +97,7 @@ function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-slate-900 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+            className="cursor-pointer w-full rounded-lg bg-slate-900 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
           >
             {loading ? "Please wait..." : isSignUp ? "Sign up" : "Sign in"}
           </button>
@@ -110,7 +110,7 @@ function LoginPage() {
               setIsSignUp(!isSignUp);
               setError("");
             }}
-            className="ml-1 font-medium text-slate-900 hover:underline cursor-pointer"
+            className="cursor-pointer ml-1 font-medium text-slate-900 hover:underline"
           >
             {isSignUp ? "Sign in" : "Sign up"}
           </button>

@@ -1,6 +1,7 @@
 import { useLeads } from "../features/leads/hooks/useLeads";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { useState } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import DashboardPage from "../pages/DashboardPage";
 import AppLayout from "../layouts/AppLayout";
 import PipelinePage from "../pages/PipelinePage";
@@ -11,19 +12,18 @@ import SettingsPage from "../features/auth/components/SettingsPage";
 import LeadDetail from "../features/leads/components/LeadDetail";
 import type { Lead } from "../features/leads/types";
 
-type ActivePage =
-  | "dashboard"
-  | "pipeline"
-  | "leads"
-  | "settings"
-  | "leadDetail";
-
 function App() {
   const { user, loading, logout, uploadAvatar } = useAuth();
-  const { leads, addLeads, deleteLead, updateLead, updateLeadStatus } =
-    useLeads();
-  const [activePage, setActivePage] = useState<ActivePage>("dashboard");
-  const [viewingLead, setViewingLead] = useState<Lead | null>(null);
+  const {
+    leads,
+    addLeads,
+    deleteLead,
+    updateLead,
+    updateLeadStatus,
+    saveNotes,
+  } = useLeads();
+  const [editingLead, setEditingLead] = useState<Lead | null>(null);
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -41,47 +41,55 @@ function App() {
       </>
     );
   }
-  const handleViewLead = (lead: Lead) => {
-    setViewingLead(lead);
-    setActivePage("leadDetail");
-  };
+
   return (
-    <AppLayout
-      activePage={activePage}
-      onPageChange={setActivePage}
-      user={user}
-      onLogout={logout}
-      onUploadAvatar={uploadAvatar}
-    >
+    <AppLayout user={user} onLogout={logout} onUploadAvatar={uploadAvatar}>
       <Toaster position="top-center" />
-      {activePage === "dashboard" && (
-        <DashboardPage leads={leads} loading={loading} />
-      )}
-      {activePage === "pipeline" && (
-        <PipelinePage leads={leads} onUpdateLeadStatus={updateLeadStatus} />
-      )}
-      {activePage === "leads" && (
-        <LeadsPage
-          leads={leads}
-          onAddLead={addLeads}
-          onDeleteLead={deleteLead}
-          onEditLead={updateLead}
-          onViewLead={handleViewLead}
+      <Routes>
+        <Route
+          path="/"
+          element={<DashboardPage leads={leads} loading={false} />}
         />
-      )}
-      {activePage === "leadDetail" && viewingLead && (
-        <LeadDetail
-          lead={viewingLead}
-          onBack={() => setActivePage("leads")}
-          onEdit={(lead) => {
-            setViewingLead(lead);
-            setActivePage("leads");
-          }}
+        <Route
+          path="/pipeline"
+          element={
+            <PipelinePage leads={leads} onUpdateLeadStatus={updateLeadStatus} />
+          }
         />
-      )}
-      {activePage === "settings" && (
-        <SettingsPage user={user} onUploadAvatar={uploadAvatar} />
-      )}
+        <Route
+          path="/leads"
+          element={
+            <LeadsPage
+              leads={leads}
+              onAddLead={addLeads}
+              onDeleteLead={deleteLead}
+              onEditLead={updateLead}
+              onViewLead={(lead) => navigate(`/leads/${lead.id}`)}
+              initialEditingLead={editingLead}
+              onClearEditingLead={() => setEditingLead(null)}
+            />
+          }
+        />
+        <Route
+          path="/leads/:id"
+          element={
+            <LeadDetail
+              leads={leads}
+              onBack={() => navigate("/leads")}
+              onEdit={(lead) => {
+                setEditingLead(lead);
+                navigate("/leads");
+              }}
+              onSaveNotes={saveNotes}
+            />
+          }
+        />
+        <Route
+          path="/settings"
+          element={<SettingsPage user={user} onUploadAvatar={uploadAvatar} />}
+        />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </AppLayout>
   );
 }

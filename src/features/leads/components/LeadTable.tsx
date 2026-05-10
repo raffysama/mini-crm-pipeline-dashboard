@@ -88,7 +88,7 @@ function LeadTable({
                 <button
                   type="button"
                   onClick={() => onEditLead(lead)}
-                  className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                  className="cursor-pointer text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline"
                 >
                   Edit
                 </button>
@@ -97,7 +97,7 @@ function LeadTable({
                 <button
                   type="button"
                   onClick={() => onDeleteLead(lead.id)}
-                  className="text-sm font-medium text-red-600 hover:text-red-700 hover:underline"
+                  className="cursor-pointer text-sm font-medium text-red-600 hover:text-red-700 hover:underline"
                 >
                   Delete
                 </button>

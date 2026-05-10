@@ -1,10 +1,13 @@
 import type { Lead } from "../types";
 import Badge from "../../../components/ui/Badge";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface LeadDetailProps {
-  lead: Lead;
+  leads: Lead[];
   onBack: () => void;
   onEdit: (lead: Lead) => void;
+  onSaveNotes: (id: string, notes: string) => Promise<void>;
 }
 
 function getStatusVariant(status: Lead["status"]) {
@@ -24,7 +27,21 @@ function getPriorityVariant(priority: Lead["priority"]) {
   return "slate";
 }
 
-function LeadDetail({ lead, onBack, onEdit }: LeadDetailProps) {
+function LeadDetail({ leads, onBack, onEdit, onSaveNotes }: LeadDetailProps) {
+  const { id } = useParams();
+  const lead = leads.find((l) => l.id === id);
+
+  const [notes, setNotes] = useState(lead.notes || "");
+  const [savingNotes, setSavingNotes] = useState(false);
+
+  if (!lead) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-sm text-slate-400">Lead not found.</p>
+      </div>
+    );
+  }
+
   const isOverdue =
     lead.next_follow_up && new Date(lead.next_follow_up) < new Date();
 
@@ -35,7 +52,7 @@ function LeadDetail({ lead, onBack, onEdit }: LeadDetailProps) {
         <div className="mb-6 flex items-center gap-4">
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900"
+            className="cursor-pointer flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-900"
           >
             <i className="ti ti-arrow-left text-base" />
             Back to Leads
@@ -116,15 +133,29 @@ function LeadDetail({ lead, onBack, onEdit }: LeadDetailProps) {
               <p className="mt-1 text-sm text-slate-700">{lead.created_at}</p>
             </div>
           </div>
-
           {/* Notes */}
           <div className="mt-4 rounded-lg bg-slate-50 p-4">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
               Notes
             </p>
-            <p className="mt-1 text-sm text-slate-700">
-              {lead.notes || "No notes added."}
-            </p>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={4}
+              className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none focus:border-slate-400"
+              placeholder="Add notes about this lead..."
+            />
+            <button
+              onClick={async () => {
+                setSavingNotes(true);
+                await onSaveNotes(lead.id, notes);
+                setSavingNotes(false);
+              }}
+              disabled={savingNotes}
+              className="cursor-pointer mt-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50"
+            >
+              {savingNotes ? "Saving..." : "Save Notes"}
+            </button>
           </div>
         </div>
       </div>

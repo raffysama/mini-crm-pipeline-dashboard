@@ -17,7 +17,7 @@ function Modal({ title, children, onClose }: ModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="rounded-md px-2 py-1 text-sm text-slate-500 hover:bg-slate-100"
+              className="cursor-pointer rounded-md px-2 py-1 text-sm text-slate-500 hover:bg-slate-100"
             >
               Close
             </button>
