@@ -31,7 +31,7 @@ function LeadDetail({ leads, onBack, onEdit, onSaveNotes }: LeadDetailProps) {
   const { id } = useParams();
   const lead = leads.find((l) => l.id === id);
 
-  const [notes, setNotes] = useState(lead.notes || "");
+  const [notes, setNotes] = useState(lead?.notes || "");
   const [savingNotes, setSavingNotes] = useState(false);
 
   if (!lead) {

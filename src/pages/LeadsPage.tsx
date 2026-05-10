@@ -11,8 +11,8 @@ interface LeadsPageProps {
   onDeleteLead: (id: string) => void;
   onEditLead: (lead: Lead) => void;
   onViewLead: (lead: Lead) => void;
-  initialEditingLead;
-  onClearEditingLead;
+  initialEditingLead?: Lead | null;
+  onClearEditingLead?: () => void;
 }
 
 function LeadsPage({
