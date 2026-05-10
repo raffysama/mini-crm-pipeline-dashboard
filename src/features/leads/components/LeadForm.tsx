@@ -15,6 +15,8 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
   const [priority, setPriority] = useState<LeadPriority>("medium");
   const [status, setStatus] = useState<LeadStatus>("new");
   const [nextFollowUp, setNextFollowup] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -25,8 +27,8 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
       id: initialData?.id ?? crypto.randomUUID(),
       company,
       contact_name: contactName,
-      email: "",
-      phone: "",
+      email,
+      phone,
       value: Number(value),
       status,
       priority,
@@ -47,6 +49,8 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
     setPriority(initialData.priority);
     setStatus(initialData.status);
     setNextFollowup(initialData.next_follow_up);
+    setEmail(initialData.email || "");
+    setPhone(initialData.phone || "");
   }, [initialData]);
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -116,6 +120,27 @@ function LeadForm({ onSubmit, onCancel, initialData }: LeadFormProps) {
           value={nextFollowUp}
           onChange={(event) => setNextFollowup(event.target.value)}
           className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
+        />
+      </div>
+      <div>
+        <label className="text-sm font-medium text-slate-700">Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
+          placeholder="contact@company.com"
+        />
+      </div>
+
+      <div>
+        <label className="text-sm font-medium text-slate-700">Phone</label>
+        <input
+          type="tel"
+          value={phone}
+          onChange={(event) => setPhone(event.target.value)}
+          className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
+          placeholder="+1 234 567 890"
         />
       </div>
       <div className="flex gap-3 pt-2">
