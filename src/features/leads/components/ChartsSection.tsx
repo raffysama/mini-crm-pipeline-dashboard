@@ -219,7 +219,7 @@ export default function ChartsSection({ leads }: Props) {
   return (
     <div className="flex flex-col gap-2.5">
       {/* Row 1 — Bar + Donut */}
-      <div className="grid gap-2.5 lg:grid-cols-[1.7fr_1fr]">
+      <div className="grid gap-2.5 grid-cols-1 lg:grid-cols-[1.7fr_1fr]">
         {/* Pipeline value by status */}
         <div className="rounded-xl border border-gray-100 bg-white p-5">
           <p className="text-xs font-medium text-gray-500">
@@ -243,7 +243,7 @@ export default function ChartsSection({ leads }: Props) {
               </span>
             ))}
           </div>
-          <div className="relative h-52 w-full">
+          <div className="relative h-52 w-full overflow-hidden">
             <canvas
               ref={barRef}
               role="img"
@@ -258,7 +258,7 @@ export default function ChartsSection({ leads }: Props) {
           <p className="mb-3 mt-0.5 text-xs text-gray-400">
             Distribution of lead urgency
           </p>
-          <div className="relative h-44 w-full">
+          <div className="relative h-44 w-full overflow-hidden">
             <canvas
               ref={donutRef}
               role="img"
@@ -299,7 +299,7 @@ export default function ChartsSection({ leads }: Props) {
         <p className="mb-3 mt-0.5 text-xs text-gray-400">
           How leads are spread across your pipeline stages
         </p>
-        <div className="relative h-40 w-full">
+        <div className="relative h-40 w-full overflow-hidden">
           <canvas
             ref={statusRef}
             role="img"

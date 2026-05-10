@@ -32,6 +32,8 @@ function LeadsPage({
   const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const leadsPerPage = 10;
 
   const filteredLeads = leads.filter((lead) => {
     const searchValue = search.toLowerCase();
@@ -49,6 +51,12 @@ function LeadsPage({
     return matchesSearch && matchesPriority && matchesStatus;
   });
   const sortedLeads = [...filteredLeads].sort((a, b) => b.value - a.value);
+
+  const totalPages = Math.ceil(sortedLeads.length / leadsPerPage);
+  const paginatedLeads = sortedLeads.slice(
+    (currentPage - 1) * leadsPerPage,
+    currentPage * leadsPerPage,
+  );
 
   const handleOpenDeleteModal = (id: string) => {
     setSelectedLeadId(id);
@@ -79,6 +87,9 @@ function LeadsPage({
       onClearEditingLead?.();
     }
   }, [initialEditingLead]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, priorityFilter, statusFilter]);
   return (
     <>
       <div className="p-6">
@@ -132,11 +143,34 @@ function LeadsPage({
         </div>
 
         <LeadTable
-          leads={sortedLeads}
+          leads={paginatedLeads}
           onDeleteLead={handleOpenDeleteModal}
           onEditLead={handleOpenEdit}
           onViewLead={onViewLead}
         />
+        {totalPages > 1 && (
+          <div className="mt-4 flex items-center justify-between text-sm text-slate-600">
+            <p>
+              {sortedLeads.length} leads · Page {currentPage} of {totalPages}
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setCurrentPage((p) => p - 1)}
+                disabled={currentPage === 1}
+                className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50 disabled:opacity-40"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => setCurrentPage((p) => p + 1)}
+                disabled={currentPage === totalPages}
+                className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50 disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
         {isEditOpen && editingLead && (
           <Modal title="Edit Lead" onClose={handleCloseEdit}>
             <LeadForm
